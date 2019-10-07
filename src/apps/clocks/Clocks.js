@@ -7,17 +7,20 @@ import {
 	FormControlLabel,
 	Switch,
 } from '@material-ui/core';
+import { TimePicker } from '@material-ui/pickers';
 import ClockCard from '@components/ClockCard';
 
 export default function Clocks(props) {
 	const [ currentTime, setCurrentTime ] = useState(localStorage.getItem('currentTime') || new Date());
+	const [ isOpenPicker, setIsOpenPicker ] = useState(false);
 
-	const handlerCurrentTime = () => {
-		localStorage.setItem('currentTime', new Date());
+	const handlerSetTime = (value) => {
+		localStorage.setItem('currentTime', value);
 		setCurrentTime(localStorage.getItem('currentTime'));
 	};
 
-	const handlerSetTime = () => {
+	const handlerCurrentTime = () => {
+		handlerSetTime(new Date());
 	};
 
 	const {
@@ -36,10 +39,25 @@ export default function Clocks(props) {
 					time={moment(currentTime).tz('Europe/Kiev').format('HH:mm')}
 					actions={
 						<Fragment>
+							<TimePicker
+								className={classes.hidden}
+								variant={'dialog'}
+								open={isOpenPicker}
+								ampm={false}
+								onOpen={() => setIsOpenPicker(true)}
+								onClose={() => setIsOpenPicker(false)}
+								value={currentTime}
+								onChange={handlerSetTime}
+								showTodayButton
+								todayLabel={'Now'}
+								autoOk
+							/>
 							<Button
 								variant={'contained'}
 								color={'primary'}
-								onClick={handlerSetTime}
+								onClick={() => {
+									setIsOpenPicker(true);
+								}}
 							>
 								Set Time
 							</Button>

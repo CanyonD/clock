@@ -11,6 +11,9 @@ const styles = ({spacing}) => ({
 		'& > button, & > label': {
 			margin: `${spacing(1)}px auto`
 		}
+	},
+	hidden: {
+		display: 'none',
 	}
 });
 
