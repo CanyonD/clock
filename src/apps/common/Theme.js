@@ -1,9 +1,13 @@
-import { createMuiTheme, CssBaseline, MuiThemeProvider } from '@material-ui/core';
+import {
+	createMuiTheme,
+	responsiveFontSizes,
+	CssBaseline,
+	MuiThemeProvider } from '@material-ui/core';
 import React, { Component } from 'react';
 
 export const defaults = {};
 
-const theme = createMuiTheme(defaults);
+const theme = responsiveFontSizes(createMuiTheme(defaults));
 
 class Theme extends Component {
 
