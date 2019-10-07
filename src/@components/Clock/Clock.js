@@ -4,6 +4,7 @@ import React from 'react';
 export default function Clock(props) {
 	const {
 		classes,
+		time
 	} = props;
 
 	return (
@@ -15,7 +16,7 @@ export default function Clock(props) {
 			noWrap
 			className={classes.root}
 		>
-			{'11:11'}
+			{time}
 		</Typography>
 	);
 }

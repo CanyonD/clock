@@ -4,18 +4,13 @@ const styles = ({spacing}) => ({
 		paddingTop: spacing(8),
 		paddingBottom: spacing(8),
 	},
-	card: {
-		minHeight: spacing(26),
-		height: '100%',
+	globalActions: {
 		display: 'flex',
+		justifyContent: 'center',
 		flexDirection: 'column',
-		justifyContent: 'center'
-	},
-	cardContent: {
-		flexGrow: 1,
-	},
-	cardActions: {
-		justifyContent: 'center'
+		'& > button, & > label': {
+			margin: `${spacing(1)}px auto`
+		}
 	}
 });
 

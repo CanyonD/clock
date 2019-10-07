@@ -1,16 +1,25 @@
-import React from 'react';
+import moment from 'moment-timezone';
+import React, { Fragment, useState } from 'react';
 import {
 	Container,
 	Grid,
-	Card,
-	CardContent,
-	CardActions,
 	Button,
-	Typography
+	FormControlLabel,
+	Switch,
 } from '@material-ui/core';
-import Clock from '@components/Clock'
+import ClockCard from '@components/ClockCard';
 
 export default function Clocks(props) {
+	const [ currentTime, setCurrentTime ] = useState(localStorage.getItem('currentTime') || new Date());
+
+	const handlerCurrentTime = () => {
+		localStorage.setItem('currentTime', new Date());
+		setCurrentTime(localStorage.getItem('currentTime'));
+	};
+
+	const handlerSetTime = () => {
+	};
+
 	const {
 		classes,
 	} = props;
@@ -18,41 +27,47 @@ export default function Clocks(props) {
 	return (
 		<Container className={classes.cardGrid} maxWidth={'lg'}>
 			<Grid container spacing={4} justify={'center'}>
-				<Grid item key={'London'} xs={12} sm={6} md={4}>
-					<Card className={classes.card}>
-						<CardContent className={classes.cardContent}>
-							<Typography gutterBottom variant={'h5'} component={'h2'} align={'center'}>
-								London
-							</Typography>
-							<Clock/>
-						</CardContent>
-					</Card>
-				</Grid>
-				<Grid item key={'Kyiv'} xs={12} sm={6} md={4}>
-					<Card className={classes.card}>
-						<CardContent className={classes.cardContent}>
-							<Typography gutterBottom variant={'h5'} component={'h2'} align={'center'}>
-								Kyiv
-							</Typography>
-							<Clock/>
-						</CardContent>
-						<CardActions className={classes.cardActions}>
-							<Button variant={'contained'} color={'primary'}>
+				<ClockCard
+					title={'London'}
+					time={moment(currentTime).tz('Europe/London').format('HH:mm')}
+				/>
+				<ClockCard
+					title={'Kyiv'}
+					time={moment(currentTime).tz('Europe/Kiev').format('HH:mm')}
+					actions={
+						<Fragment>
+							<Button
+								variant={'contained'}
+								color={'primary'}
+								onClick={handlerSetTime}
+							>
 								Set Time
 							</Button>
-						</CardActions>
-					</Card>
-				</Grid>
-				<Grid item key={'Tokyo'} xs={12} sm={6} md={4}>
-					<Card className={classes.card}>
-						<CardContent className={classes.cardContent}>
-							<Typography gutterBottom variant={'h5'} component={'h2'} align={'center'}>
-								Tokyo
-							</Typography>
-							<Clock/>
-						</CardContent>
-					</Card>
-				</Grid>
+						</Fragment>
+					}
+				/>
+				<ClockCard
+					title={'Tokyo'}
+					time={moment(currentTime).tz('Asia/Tokyo').format('HH:mm')}
+				/>
+			</Grid>
+
+			<Grid container spacing={4} justify={'center'} className={classes.globalActions}>
+				<FormControlLabel
+					value={'start'}
+					control={
+						<Switch color="primary"/>
+					}
+					label={'Real-time'}
+					labelPlacement={'start'}
+				/>
+				<Button
+					variant={'contained'}
+					color={'primary'}
+					onClick={handlerCurrentTime}
+				>
+					Set Current Time
+				</Button>
 			</Grid>
 		</Container>
 	);
