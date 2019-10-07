@@ -1,0 +1,26 @@
+{
+	"presets": [
+		"env",
+		"es2015",
+		"react"
+	],
+	"plugins": [
+		[
+			"module-resolver",
+			{
+				"root": [
+					"./src"
+				],
+				"alias": {
+					"@components": "./src/@components",
+					"apps": "./src/apps",
+					"configs": "./src/configs",
+					"helpers": "./src/helpers",
+					"styles": "./src/styles",
+					"store": "./src/store",
+					"assets": "./src/assets"
+				}
+			}
+		]
+	]
+}
