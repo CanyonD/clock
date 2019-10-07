@@ -1,8 +1,8 @@
 const styles = ({ spacing, breakpoints }) => ({
 	root: {},
 	cardGrid: {
-		paddingTop: spacing(8),
-		paddingBottom: spacing(8),
+		paddingTop: spacing(4),
+		paddingBottom: spacing(4),
 		[breakpoints.down('md')]: {
 			paddingTop: spacing(2),
 			paddingBottom: spacing(2),

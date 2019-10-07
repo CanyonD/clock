@@ -4,7 +4,7 @@ import MomentUtils from '@date-io/moment';
 import Theme from 'apps/common/Theme';
 import Layout from 'apps/common/Layout';
 import Clocks from 'apps/clocks';
-import 'styles/App.css';
+// import 'styles/App.css';
 
 function App() {
 	return (
