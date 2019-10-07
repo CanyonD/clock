@@ -1,5 +1,5 @@
 import moment from 'moment-timezone';
-import React, { Fragment, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import {
 	Container,
 	Grid,
@@ -12,20 +12,52 @@ import ClockCard from '@components/ClockCard';
 
 export default function Clocks(props) {
 	const [ currentTime, setCurrentTime ] = useState(localStorage.getItem('currentTime') || new Date());
+	const [ realTime, setRealTime ] = useState(JSON.parse(localStorage.getItem('realTime')) || false);
 	const [ isOpenPicker, setIsOpenPicker ] = useState(false);
+
+	const refIntervalId = useRef(null);
+
+	const handlerRealTime = () => {
+		localStorage.setItem('realTime', JSON.stringify(!realTime));
+		setRealTime(JSON.parse(localStorage.getItem('realTime')));
+	};
 
 	const handlerSetTime = (value) => {
 		localStorage.setItem('currentTime', value);
 		setCurrentTime(localStorage.getItem('currentTime'));
 	};
 
-	const handlerCurrentTime = () => {
+	const handlerCurrentTime = useCallback(() => {
 		handlerSetTime(new Date());
-	};
+	}, []);
+
+	const startRealTime = useCallback(() => {
+		refIntervalId.current = setInterval(handlerCurrentTime, 1000);
+	}, [ refIntervalId, handlerCurrentTime ]);
+
+	const stopRealTime = useCallback(() => {
+		clearInterval(refIntervalId.current);
+	}, [ refIntervalId ]);
+
+	useEffect(() => {
+		if (realTime) {
+			startRealTime();
+		} else {
+			stopRealTime();
+		}
+	}, [ realTime, startRealTime, stopRealTime ]);
+
+	useEffect(() => {
+		return () => {
+			clearInterval(refIntervalId.current);
+		};
+	}, [ refIntervalId ]);
 
 	const {
 		classes,
 	} = props;
+
+	const timeFormat = 'HH:mm';
 
 	return (
 		<Container className={classes.cardGrid} maxWidth={'lg'}>
@@ -38,15 +70,15 @@ export default function Clocks(props) {
 			>
 				<ClockCard
 					title={'London'}
-					time={moment(currentTime).tz('Europe/London').format('HH:mm')}
+					time={moment(currentTime).tz('Europe/London').format(timeFormat)}
 				/>
 				<ClockCard
 					title={'Kyiv'}
-					time={moment(currentTime).tz('Europe/Kiev').format('HH:mm')}
+					time={moment(currentTime).tz('Europe/Kiev').format(timeFormat)}
 				/>
 				<ClockCard
 					title={'Tokyo'}
-					time={moment(currentTime).tz('Asia/Tokyo').format('HH:mm')}
+					time={moment(currentTime).tz('Asia/Tokyo').format(timeFormat)}
 				/>
 			</Grid>
 
@@ -77,7 +109,11 @@ export default function Clocks(props) {
 				<FormControlLabel
 					value={'start'}
 					control={
-						<Switch color="primary"/>
+						<Switch
+							color="primary"
+							checked={realTime}
+							onChange={handlerRealTime}
+						/>
 					}
 					label={'Real-time'}
 					labelPlacement={'start'}
