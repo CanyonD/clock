@@ -1,26 +1,23 @@
 import React from 'react';
-import logo from 'assets/logo.svg';
+import Theme from 'apps/common/Theme';
+import Layout from 'apps/common/Layout';
+import Clocks from 'apps/clocks';
 import 'styles/App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	return (
+		<Theme>
+			<Layout
+				title={'Clock application'}
+				footer={{
+					link: 'https://canyond.github.io/clock',
+					projectName: 'Clock'
+				}}
+			>
+				<Clocks/>
+			</Layout>
+		</Theme>
+	);
 }
 
 export default App;
